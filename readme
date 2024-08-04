@@ -17,6 +17,7 @@ git push -u origin main
 
 #----------------------
 
+
 sudo dnf update -y
 sudo dnf install -y epel-release
 sudo dnf install ansible -y
@@ -30,6 +31,12 @@ sudo pip3 install --upgrade pip
 python -V
 pip3 --version
 
-
+# Config VS Code pour git
 git config --global user.email "..."                             
 git config --global user.name "..."
+
+# Fichier inventory
+
+[almalinux]
+server1 ansible_host=192.168.1.10
+server2 ansible_host=192.168.1.11

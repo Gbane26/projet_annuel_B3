@@ -1,0 +1,15 @@
+---
+- name: Sécurisation des serveurs AlmaLinux
+  hosts: almalinux
+  become: yes
+  vars:
+    selinux_state: enforcing
+    firewall_rules:
+      - service: ssh
+      - port: 80
+        protocol: tcp
+  tasks:
+    - include_tasks: tasks/security.yml
+    - include_tasks: tasks/updates.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/logging.yml
