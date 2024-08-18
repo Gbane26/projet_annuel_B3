@@ -1,0 +1,70 @@
+---
+
+#- name: Automatiser les mises à jour sur AlmaLinux 9 avec dnf-automatic
+ # hosts: all
+  #become: yes
+
+# Tâches pour automatiser les mises à jour sur AlmaLinux 9 avec dnf-automatic
+- name: Installer dnf-automatic
+  ansible.builtin.yum:
+    name: dnf-automatic
+    state: present
+
+
+
+- name: Configurer dnf-automatic pour télécharger et installer automatiquement les mises à jour
+  ansible.builtin.copy:
+    dest: /etc/dnf/automatic.conf
+    content: |
+      [commands]
+      upgrade_type = default
+      random_sleep = 0
+      download_updates = yes
+      apply_updates = yes
+      
+      [emitters]
+      system_name = my_alma9_system
+      emit_via = stdio
+
+      [email]
+      email_from = root@localhost
+      email_to = root@localhost
+      email_host = localhost
+
+      [command_email]
+      command = /usr/bin/mail -s "dnf-automatic report" root@localhost
+
+      [base]
+      debuglevel = 1
+
+- name: Activer et démarrer le timer pour télécharger et installer les mises à jour
+  ansible.builtin.systemd:
+    name: dnf-automatic-install.timer
+    enabled: yes
+    state: started
+
+- name: Vérifier le statut du timer dnf-automatic-install
+  ansible.builtin.command:
+    cmd: systemctl status dnf-automatic-install.timer
+  register: timer_status
+
+- name: Afficher le statut du timer dnf-automatic-install
+  ansible.builtin.debug:
+    msg: "{{ timer_status.stdout }}"
+
+- name: Mise à jour du système AlmaLinux 9 avec les derniers correctifs de sécurité
+  hosts: almalinux
+  become: yes
+  tasks:
+
+    - name: Mettre à jour les packages et appliquer les correctifs de sécurité
+      command: sudo dnf update -y
+      args:
+        warn: false
+      register: update_result
+      changed_when: "'No packages marked for update' not in update_result.stdout"
+      
+    - name: Redémarrer le système si une mise à jour du noyau a été appliquée
+      reboot:
+        msg: "Redémarrage après mise à jour du noyau"
+      when: update_result.stdout.find('kernel') != -1

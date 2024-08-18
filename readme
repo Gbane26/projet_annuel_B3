@@ -31,6 +31,10 @@ sudo pip3 install --upgrade pip
 python -V
 pip3 --version
 
+# Installer ansible 
+ansible-galaxy collection install community.general
+
+
 # Config VS Code pour git
 git config --global user.email "..."                             
 git config --global user.name "..."

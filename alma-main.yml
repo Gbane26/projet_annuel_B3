@@ -9,6 +9,7 @@
       - port: 80
         protocol: tcp
   tasks:
+    - include_tasks: tasks/ipv6.yml
     - include_tasks: tasks/security.yml
     - include_tasks: tasks/updates.yml
     - include_tasks: tasks/ssh.yml

@@ -1,0 +1,8 @@
+---
+
+
+
+- name: Blacklist the dummy driver module
+  community.general.kernel_blacklist:
+    name:  dummy
+    state: present
