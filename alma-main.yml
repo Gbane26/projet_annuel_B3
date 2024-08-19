@@ -14,3 +14,5 @@
     - include_tasks: tasks/updates.yml
     - include_tasks: tasks/ssh.yml
     - include_tasks: tasks/logging.yml
+    - include_tasks: tasks/verrouRoot.yml
+    - include_tasks: tasks/cron.yml
