@@ -18,6 +18,7 @@
     - include_tasks: tasks/cron.yml
     - include_tasks: tasks/sftab.yml
     - include_tasks: tasks/password.yml
+    - include_tasks: tasks/disablewereless.yml
 
   # - include_tasks: tasks/unlockroot.yml
     
