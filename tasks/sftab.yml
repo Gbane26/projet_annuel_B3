@@ -1,0 +1,16 @@
+---
+- name: Supprimer l'entrée /tmp de /etc/fstab
+  become: true # Utilisation de privilèges élevés pour les tâches
+  ansible.posix.mount:
+    path: /tmp
+    state: absent
+  tags:
+    - fstab
+
+- name: Supprimer les entrées de floppy dans /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    state: absent
+    regexp: '^(.*)floppy(.*)$'
+  tags:
+    - fstab

@@ -16,3 +16,8 @@
     - include_tasks: tasks/logging.yml
     - include_tasks: tasks/verrouRoot.yml
     - include_tasks: tasks/cron.yml
+    - include_tasks: tasks/sftab.yml
+    - include_tasks: tasks/password.yml
+
+  # - include_tasks: tasks/unlockroot.yml
+    

@@ -1,0 +1,22 @@
+---
+- name: Déverrouiller et configurer le compte root sur AlmaLinux 9
+  become: yes  # Exécution en tant que superutilisateur
+
+  user:
+    name: root
+    password_lock: no  # Déverrouiller le compte
+    shell: /bin/bash   # Assure que root a un shell valide
+
+- name: Configurer un mot de passe pour root
+  user:
+    name: root
+    password: "{{ 'P@ssw0rd1234' | password_hash('sha512') }}"
+    update_password: always  # Met à jour le mot de passe à chaque exécution
+
+- name: Vérifier que le compte root n'est pas verrouillé
+  command: passwd -S root
+  register: root_status
+
+- name: Afficher l'état du compte root
+  debug:
+    msg: "{{ root_status.stdout }}"
